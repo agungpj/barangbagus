@@ -1,30 +1,123 @@
 import React from "react";
-import { HiArrowNarrowRight } from "react-icons/hi";
+import { FaSearch } from "react-icons/fa";
+import Navbar from "../components/Navbar";
+import Product1 from "../assets/product1.png";
+import Product2 from "../assets/product2.png";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div name="home" className="w-full h-screen bg-[#0a192f]">
+    <div name="home" className=" bg-[#020202] h-[100%]">
+      <Navbar />
       {/* Container */}
-      <div className="max-w-[1000px] mx-auto px-8 flex flex-col justify-center h-full">
-        <p className="text-pink-600">Hi, my name is</p>
-        <h1 className="text-4xl sm:text-7xl font-bold text-[#ccd6f6]">
-          Clint Briley
-        </h1>
-        <h2 className="text-4xl sm:text-7xl font-bold text-[#8892b0]">
-          I'm a Full Stack Developer.
-        </h2>
-        <p className="text-[#8892b0] py-4 max-w-[700px]">
-          I’m a full-stack developer specializing in building (and occasionally
-          designing) exceptional digital experiences. Currently, I’m focused on
-          building responsive full-stack web applications.
-        </p>
-        <div>
-          <button className="text-white group border-2 px-6 py-3 my-2 flex items-center hover:bg-pink-600 hover:border-pink-600">
-            View Work
-            <span className="group-hover:rotate-90 duration-300">
-              <HiArrowNarrowRight className="ml-3 " />
-            </span>
-          </button>
+      <div className="mx-auto max-w-[1150px] px-8 flex flex-col h-full p-0 m-0">
+        <div className="pt-40 pb-10">
+          <p className="text-white font-bold text-3xl">Products</p>
+        </div>
+        <div class="wrap">
+          <div class="search">
+            <input
+              type="text"
+              class="searchTerm"
+              placeholder="What are you looking for?"
+            />
+            <button type="submit" class="searchButton">
+              <FaSearch className="pl-2" />
+            </button>
+          </div>
+        </div>
+
+        <div className="w-full grid grid-cols-2 gap-x- sm:grid-cols-4 text-center py-8 gap-y-10">
+          <Link to={"/productid"} className="col text-decoration-none">
+            <div className="shadow-md shadow-[#040c16] card bg-[#0b0b0b] hover:scale-105 duration-500">
+              <img src={Product1} alt="Logo Image" />
+              <p className="font-bold text-lg py-1 text-red-600">
+                Keyboard Gaming
+              </p>
+              <p className="text-white">Rp. 700.000</p>
+              <p className="text-white">Stock: 193</p>
+            </div>
+          </Link>
+          <Link to={"/productid"} className="col text-decoration-none">
+            <div className="shadow-md shadow-[#040c16] card bg-[#0b0b0b] hover:scale-105 duration-500">
+              <img src={Product1} alt="Logo Image" />
+              <p className="font-bold text-lg py-1 text-red-600">
+                Keyboard Gaming
+              </p>
+              <p className="text-white">Rp. 700.000</p>
+              <p className="text-white">Stock: 193</p>
+            </div>
+          </Link>
+          <Link to={"/productid"} className="col text-decoration-none">
+            <div className="shadow-md shadow-[#040c16] card bg-[#0b0b0b] hover:scale-105 duration-500">
+              <img src={Product1} alt="Logo Image" />
+              <p className="font-bold text-lg py-1 text-red-600">
+                Keyboard Gaming
+              </p>
+              <p className="text-white">Rp. 700.000</p>
+              <p className="text-white">Stock: 193</p>
+            </div>
+          </Link>
+          <Link to={"/productid"} className="col text-decoration-none">
+            <div className="shadow-md shadow-[#040c16] card bg-[#0b0b0b] hover:scale-105 duration-500">
+              <img src={Product1} alt="Logo Image" />
+              <p className="font-bold text-lg py-1 text-red-600">
+                Keyboard Gaming
+              </p>
+              <p className="text-white">Rp. 700.000</p>
+              <p className="text-white">Stock: 193</p>
+            </div>
+          </Link>
+          <Link to={"/productid"} className="col text-decoration-none">
+            <div className="shadow-md shadow-[#040c16] card bg-[#0b0b0b] hover:scale-105 duration-500">
+              <img src={Product1} alt="Logo Image" />
+              <p className="font-bold text-lg py-1 text-red-600">
+                Keyboard Gaming
+              </p>
+              <p className="text-white">Rp. 700.000</p>
+              <p className="text-white">Stock: 193</p>
+            </div>
+          </Link>
+          <Link to={"/productid"} className="col text-decoration-none">
+            <div className="shadow-md shadow-[#040c16] card bg-[#0b0b0b] hover:scale-105 duration-500">
+              <img src={Product1} alt="Logo Image" />
+              <p className="font-bold text-lg py-1 text-red-600">
+                Keyboard Gaming
+              </p>
+              <p className="text-white">Rp. 700.000</p>
+              <p className="text-white">Stock: 193</p>
+            </div>
+          </Link>
+          <Link to={"/productid"} className="col text-decoration-none">
+            <div className="shadow-md shadow-[#040c16] card bg-[#0b0b0b] hover:scale-105 duration-500">
+              <img src={Product2} alt="Logo Image" />
+              <p className="font-bold text-lg py-1 text-red-600">
+                Mouse Bukan Gaming
+              </p>
+              <p className="text-white">Rp. 300.000</p>
+              <p className="text-white">Stock: 23</p>
+            </div>
+          </Link>
+          <Link to={"/productid"} className="col text-decoration-none">
+            <div className="shadow-md shadow-[#040c16] card bg-[#0b0b0b] hover:scale-105 duration-500">
+              <img src={Product2} alt="Logo Image" />
+              <p className="font-bold text-lg py-1 text-red-600">
+                Mouse Bukan Gaming
+              </p>
+              <p className="text-white">Rp. 300.000</p>
+              <p className="text-white">Stock: 23</p>
+            </div>
+          </Link>
+          <Link to={"/productid"} className="col text-decoration-none">
+            <div className="shadow-md shadow-[#040c16] card bg-[#0b0b0b] hover:scale-105 duration-500">
+              <img src={Product2} alt="Logo Image" />
+              <p className="font-bold text-lg py-1 text-red-600">
+                Mouse Bukan Gaming
+              </p>
+              <p className="text-white">Rp. 300.000</p>
+              <p className="text-white">Stock: 23</p>
+            </div>
+          </Link>
         </div>
       </div>
     </div>

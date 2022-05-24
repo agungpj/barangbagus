@@ -7,6 +7,7 @@
 @layer base {
   body {
     @apply font-[Raleway];
+    @apply bg-[#020202];
   }
   li {
     @apply px-4;
@@ -58,4 +59,85 @@ nav.fill ul li a:after {
 }
 nav.stroke ul li a:hover:after {
   width: 100%;
+}
+
+.card-product {
+  background: #212121;
+  border-radius: 5px;
+}
+
+.card-product:hover {
+  box-shadow: 0px 0px 10px #3d3d3d;
+}
+
+.card {
+  width: 14rem;
+  height: 24rem;
+}
+
+.desc {
+  margin-top: -37rem;
+  margin-left: 29rem;
+}
+
+/* SCROLLBAR */
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f100;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* END SCROLLBAR */
+.search {
+  max-width: 240px;
+  width: 100%;
+  display: flex;
+}
+
+.searchTerm {
+  width: 100%;
+  border: 3px solid rgb(239, 64, 64);
+  border-right: none;
+  padding: 5px;
+  height: 36px;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  color: #9dbfaf;
+}
+
+.searchTerm:focus {
+  color: rgb(239, 64, 64);
+}
+
+.searchButton {
+  width: 40px;
+  height: 36px;
+  border: 1px solid rgb(239, 64, 64);
+  background: rgb(239, 64, 64);
+  text-align: center;
+  color: #fff;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/*Resize the wrap to see the search bar change!*/
+
+.spike {
+  width: 30rem;
+  height: 9rem;
 }
