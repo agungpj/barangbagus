@@ -5,7 +5,7 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import "../index.css";
 
-const Navbar = () => {
+const NavbarAdmin = () => {
   const navigate = useNavigate();
   const [nav, setNav] = useState(false);
 
@@ -27,7 +27,7 @@ const Navbar = () => {
       className="fixed w-full h-[80px] flex items-center px-4 justify-between 
      bg-[#020202] text-white z-50"
     >
-      <Link to={"/"} className="col text-decoration-none">
+      <Link to={"/product"} className="col text-decoration-none">
         <div>
           <img src={Logo} alt="Logo" style={{ width: "70px" }} />
         </div>
@@ -40,11 +40,18 @@ const Navbar = () => {
             </li>
           </Link>
 
-          <Link to={"/profile"} className="col text-decoration-none">
+          <Link to={"/category"} className="col text-decoration-none">
             <li className="hover:text-red-500 border-b-1">
-              <a className="font-bold"> Profile</a>
+              <a className="font-bold"> Category</a>
             </li>
           </Link>
+
+          <Link to={"/product"} className="col text-decoration-none">
+            <li className="hover:text-red-500 border-b-1">
+              <a className="font-bold"> Product</a>
+            </li>
+          </Link>
+
           <Link to={"#"} className="col text-decoration-none">
             <li className="hover:text-red-500 border-b-1" onClick={logout}>
               <a className="font-bold"> Logout</a>
@@ -69,11 +76,18 @@ const Navbar = () => {
           </li>
         </Link>
 
-        <Link to={"/profile"}>
+        <Link to={"/category"}>
           <li className="py-6 text-4xl">
-            <a className="font-bold"> Profile</a>
+            <a className="font-bold"> Category</a>
           </li>
         </Link>
+
+        <Link to={"/product"}>
+          <li className="py-6 text-4xl">
+            <a className="font-bold"> Product</a>
+          </li>
+        </Link>
+
         <Link to={"/"}>
           <li className="py-6 text-4xl">
             <a className="font-bold"> Logout</a>
@@ -84,4 +98,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavbarAdmin;

@@ -1,20 +1,36 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect, useContext } from "react";
 import Navbar from "../components/Navbar";
 import { Dialog, Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/userContext";
+import NavbarAdmin from "../components/NavbarAdmin";
 
 const Category = () => {
   const [nav, setNav] = useState(false);
   const Navigate = useNavigate();
 
   let [isOpen, setIsOpen] = useState(false);
+  const [state, dispatch] = useContext(UserContext);
+  console.log(state);
+
+  useEffect(() => {
+    if (state.isLogin === false) {
+      Navigate("/auth");
+    } else {
+      if (state.user.status === "admin") {
+        Navigate("/category");
+      } else if (state.user.status === "customer") {
+        Navigate("/");
+      }
+    }
+  }, [state]);
 
   const handleClick = () => {
     setNav(!nav);
   };
   return (
     <>
-      <Navbar />
+      <NavbarAdmin />
       <div className="h-screen bg-[#020202]">
         <div className="p-5 h-screen pt-32">
           <h1 className="text-xl mb-2 text-white">Your Categories</h1>

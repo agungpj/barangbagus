@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 import Product1 from "../assets/product1.png";
