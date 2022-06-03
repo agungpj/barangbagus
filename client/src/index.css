@@ -141,3 +141,10 @@ nav.stroke ul li a:hover:after {
   width: 30rem;
   height: 9rem;
 }
+
+.card-form-input {
+  background: rgba(210, 210, 210, 0.25);
+  border: 2px solid #bcbcbc;
+  box-sizing: border-box;
+  border-radius: 5px;
+}

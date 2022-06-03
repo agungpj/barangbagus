@@ -19,31 +19,31 @@ const AddProduct = () => {
   }); //Store product data
 
   // Fetching category data
-  // const getCategories = async () => {
-  //   try {
-  //     const response = await API.get("/categories");
-  //     setCategories(response.data.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const getCategories = async () => {
+    try {
+      const response = await API.get("/categories");
+      setCategories(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // For handle if category selected
-  // const handleChangeCategoryId = (e) => {
-  //   const id = e.target.value;
-  //   const checked = e.target.checked;
+  const handleChangeCategoryId = (e) => {
+    const id = e.target.value;
+    const checked = e.target.checked;
 
-  //   if (checked) {
-  //     // Save category id if checked
-  //     setCategoryId([...categoryId, parseInt(id)]);
-  //   } else {
-  //     // Delete category id from variable if unchecked
-  //     let newCategoryId = categoryId.filter((categoryIdItem) => {
-  //       return categoryIdItem != id;
-  //     });
-  //     setCategoryId(newCategoryId);
-  //   }
-  // };
+    if (checked) {
+      // Save category id if checked
+      setCategoryId([...categoryId, parseInt(id)]);
+    } else {
+      // Delete category id from variable if unchecked
+      let newCategoryId = categoryId.filter((categoryIdItem) => {
+        return categoryIdItem !== id;
+      });
+      setCategoryId(newCategoryId);
+    }
+  };
 
   // Handle change data on form
   const handleChange = (e) => {
@@ -78,7 +78,7 @@ const AddProduct = () => {
       formData.set("desc", form.desc);
       formData.set("price", form.price);
       formData.set("qty", form.qty);
-      // formData.set("categoryId", categoryId);
+      formData.set("categoryId", categoryId);
 
       console.log(form);
 
@@ -92,9 +92,9 @@ const AddProduct = () => {
     }
   });
 
-  // useEffect(() => {
-  //   getCategories();
-  // }, []);
+  useEffect(() => {
+    getCategories();
+  }, []);
 
   return (
     <div name="home" className="w-full bg-[#020202] h-full">
@@ -172,6 +172,39 @@ const AddProduct = () => {
               onChange={handleChange}
             />
           </div>
+          <div className="bg-zinc-900 bg-opacity-75 text-white mt-4 px-2 py-1 pb-2 rounded-md">
+            <div className="text-white font-bold  mb-1 text-lg flex justify-center pb-5">
+              Category
+            </div>
+
+            {categories?.map((item, index) => (
+              // <label className="checkbox-inline me-4" key={index}>
+              //   <input
+              //     type="checkbox"
+              //     value={item.id}
+              //     onClick={handleChangeCategoryId}
+              //   />{" "}
+              //   {item.name}
+              // </label>
+              <div className="form-check" key={index}>
+                <label
+                  class="form-check-label inline-block text-white font-bold"
+                  key={index}
+                >
+                  <input
+                    class=" form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain mr-2 cursor-pointer"
+                    type="checkbox"
+                    value={item.id}
+                    id="flexCheckDefault"
+                    onClick={handleChangeCategoryId}
+                  />
+
+                  {item.name}
+                </label>
+              </div>
+            ))}
+          </div>
+
           <button
             className="bg-green-500 hover:bg-green-600 my-10 text-white font-bold py-2 w-full rounded focus:outline-none focus:shadow-outline"
             type="submit"

@@ -3,12 +3,19 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 import NavbarAdmin from "../components/NavbarAdmin";
 import { UserContext } from "../context/userContext";
+import { API } from "../config/api";
+import { useQuery } from "react-query";
+import rupiahFormat from "rupiah-format";
 
 const ProductAdmin = () => {
+  let [isOpen, setIsOpen] = useState(false);
+
+  const Navigate = useNavigate();
   const [state, dispatch] = useContext(UserContext);
   console.log(state);
 
   useEffect(() => {
+    console.log(products);
     if (state.isLogin === false) {
       Navigate("/auth");
     } else {
@@ -19,14 +26,11 @@ const ProductAdmin = () => {
       }
     }
   }, [state]);
-  const Navigate = useNavigate();
-  const [nav, setNav] = useState(false);
 
-  let [isOpen, setIsOpen] = useState(false);
-
-  const handleClick = () => {
-    setNav(!nav);
-  };
+  let { data: products } = useQuery("productsCache", async () => {
+    const response = await API.get("/products");
+    return response.data.data;
+  });
 
   return (
     <>
@@ -69,162 +73,141 @@ const ProductAdmin = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                <tr className="bg-white">
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    <a
-                      href="#"
-                      className="font-bold text-blue-500 hover:underline"
-                    >
-                      1
-                    </a>
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    index.png
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    Mouse Gaming
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    Mouse Gaming
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    Rp. 200.000
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    Rp. 200.000
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    <div className="flex space-x-5">
-                      <button
-                        className="text-white text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-green-500 hover:bg-green-600"
-                        type="button"
-                        onClick={() => Navigate("/edit-product")}
+                {products?.map((item, index) => (
+                  <tr key={index} className="bg-white">
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      <a
+                        href="#"
+                        className="font-bold text-blue-500 hover:underline"
                       >
-                        Edit
-                      </button>
-                      <button
-                        className="bg-red-500 hover:bg-red-600 text-white text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline"
-                        type="button"
-                        // onClick={() => Navigate("/")}
-                        onClick={() => setIsOpen(!isOpen)}
+                        {index + 1}
+                      </a>
+                    </td>
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      <img
+                        src={item.image}
+                        style={{
+                          width: "80px",
+                          height: "80px",
+                          objectFit: "cover",
+                        }}
+                        alt={item.name}
+                      />
+                    </td>
+                    <td className="p-3 text-sm text-gray-700">{item.name}</td>
+                    <td className="p-3 text-sm text-gray-700">{item.desc}</td>
+                    <td className="p-3 text-sm text-gray-700">
+                      {rupiahFormat.convert(item.price)}
+                    </td>
+                    <td className="p-3 text-sm text-gray-700">{item.qty}</td>
+                    <td className="p-3 text-sm text-gray-700">
+                      <div className="flex space-x-5">
+                        <button
+                          className="text-white text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-green-500 hover:bg-green-600"
+                          type="button"
+                          onClick={() => Navigate("/edit-product")}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="bg-red-500 hover:bg-red-600 text-white text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline"
+                          type="button"
+                          // onClick={() => Navigate("/")}
+                          onClick={() => setIsOpen(!isOpen)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                      <Transition
+                        as={Fragment}
+                        show={isOpen}
+                        enter="transition duration-500"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="transition duration-500"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
                       >
-                        Delete
-                      </button>
-                    </div>
-                    <Transition
-                      as={Fragment}
-                      show={isOpen}
-                      enter="transition duration-500"
-                      enterFrom="opacity-0"
-                      enterTo="opacity-100"
-                      leave="transition duration-500"
-                      leaveFrom="opacity-100"
-                      leaveTo="opacity-0"
-                    >
-                      <Dialog
-                        as="div"
-                        className="fixed inset-0 flex items-center justify-center"
-                        open={isOpen}
-                        onClose={() => setIsOpen(false)}
-                      >
-                        <Dialog.Overlay className="fixed inset-0 bg-black/50" />
+                        <Dialog
+                          as="div"
+                          className="fixed inset-0 flex items-center justify-center"
+                          open={isOpen}
+                          onClose={() => setIsOpen(false)}
+                        >
+                          <Dialog.Overlay className="fixed inset-0 bg-black/50" />
 
-                        <div className="bg-white p-8 rounded z-10 shadow-xl">
-                          <Dialog.Panel>
-                            <div class="w-full max-w-xs space-x-16">
-                              <p>Are you sure want to delete this data ?</p>
-                              <button
-                                className="text-white my-3 text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-green-500 hover:bg-green-600"
-                                type="button"
-                                // onClick={() => Navigate("/")}
-                              >
-                                Yes
-                              </button>
-                              <button
-                                className="text-white text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-600"
-                                type="button"
-                                // onClick={() => Navigate("/")}
-                              >
-                                No
-                              </button>
-                            </div>
-                          </Dialog.Panel>
-                        </div>
-                      </Dialog>
-                    </Transition>
-                  </td>
-                </tr>
+                          <div className="bg-white p-8 rounded z-10 shadow-xl">
+                            <Dialog.Panel>
+                              <div class="w-full max-w-xs space-x-16">
+                                <p>Are you sure want to delete this data ?</p>
+                                <button
+                                  className="text-white my-3 text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-green-500 hover:bg-green-600"
+                                  type="button"
+                                  // onClick={() => Navigate("/")}
+                                >
+                                  Yes
+                                </button>
+                                <button
+                                  className="text-white text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-600"
+                                  type="button"
+                                  // onClick={() => Navigate("/")}
+                                >
+                                  No
+                                </button>
+                              </div>
+                            </Dialog.Panel>
+                          </div>
+                        </Dialog>
+                      </Transition>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
-            <div className="bg-white space-y-3 p-4 rounded-lg shadow">
-              <div className="flex items-center space-x-2 text-sm">
-                <div>
-                  <a
-                    href="#"
-                    className="text-blue-500 font-bold hover:underline"
-                  >
-                    #1000
-                  </a>
+            {products?.map((item, index) => (
+              <div
+                className="bg-white space-y-3 p-4 rounded-lg shadow"
+                key={index}
+              >
+                <div className="flex items-center space-x-2 text-sm">
+                  <div>
+                    <a
+                      href="#"
+                      className="text-blue-500 text-lg font-bold hover:underline"
+                    >
+                      {index + 1}
+                    </a>
+                  </div>
+                  <div className="text-zinc-600 text-md font-bold uppercase">
+                    {item.name}
+                  </div>
+                  <div>
+                    <span className="p-1.5 text-md font-bold tracking-wider text-zinc-600">
+                      Procut Tersisa : {item.qty}
+                    </span>
+                  </div>
                 </div>
-                <div className="text-gray-500">10/10/2021</div>
+                <div className="text-sm text-gray-700">{item.desc}</div>
                 <div>
-                  <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-green-800 bg-green-200 rounded-lg bg-opacity-50">
-                    Delivered
-                  </span>
+                  <img
+                    src={item.image}
+                    style={{
+                      width: "80px",
+                      height: "80px",
+                      objectFit: "cover",
+                    }}
+                    alt={item.name}
+                  />
                 </div>
-              </div>
-              <div className="text-sm text-gray-700">
-                Kring New Fit office chair, mesh + PU, black
-              </div>
-              <div className="text-sm font-medium text-black">$200.00</div>
-            </div>
-            <div className="bg-white space-y-3 p-4 rounded-lg shadow">
-              <div className="flex items-center space-x-2 text-sm">
-                <div>
-                  <a
-                    href="#"
-                    className="text-blue-500 font-bold hover:underline"
-                  >
-                    #1001
-                  </a>
-                </div>
-                <div className="text-gray-500">10/10/2021</div>
-                <div>
-                  <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-yellow-800 bg-yellow-200 rounded-lg bg-opacity-50">
-                    Shipped
-                  </span>
-                </div>
-              </div>
-              <div className="text-sm text-gray-700">
-                Kring New Fit office chair, mesh + PU, black
-              </div>
-              <div className="text-sm font-medium text-black">$200.00</div>
-            </div>
-            <div className="bg-white space-y-3 p-4 rounded-lg shadow">
-              <div className="flex items-center space-x-2 text-sm">
-                <div>
-                  <a
-                    href="#"
-                    className="text-blue-500 font-bold hover:underline"
-                  >
-                    #1002
-                  </a>
-                </div>
-                <div className="text-gray-500">10/10/2021</div>
-                <div>
-                  <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-gray-800 bg-gray-200 rounded-lg bg-opacity-50">
-                    Canceled
-                  </span>
+                <div className="text-sm font-medium text-black">
+                  {" "}
+                  {rupiahFormat.convert(item.price)}
                 </div>
               </div>
-              <div className="text-sm text-gray-700">
-                Kring New Fit office chair, mesh + PU, black
-              </div>
-              <div className="text-sm font-medium text-black">$200.00</div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

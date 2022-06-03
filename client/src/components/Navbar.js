@@ -29,25 +29,25 @@ const Navbar = () => {
     >
       <Link to={"/"} className="col text-decoration-none">
         <div>
-          <img src={Logo} alt="Logo" style={{ width: "70px" }} />
+          <img src={Logo} alt="Logo" className="w-[50px] sm:w-[70px]" />
         </div>
       </Link>
       <nav className="stroke">
         <ul className="hidden md:flex ">
           <Link to={"/complain"} className="col text-decoration-none">
             <li className="hover:text-red-500 border-b-1">
-              <a className="font-bold"> Complain</a>
+              <p className="font-bold"> Complain</p>
             </li>
           </Link>
 
           <Link to={"/profile"} className="col text-decoration-none">
             <li className="hover:text-red-500 border-b-1">
-              <a className="font-bold"> Profile</a>
+              <p className="font-bold"> Profile</p>
             </li>
           </Link>
           <Link to={"#"} className="col text-decoration-none">
             <li className="hover:text-red-500 border-b-1" onClick={logout}>
-              <a className="font-bold"> Logout</a>
+              <p className="font-bold"> Logout</p>
             </li>
           </Link>
         </ul>
@@ -65,18 +65,18 @@ const Navbar = () => {
       >
         <Link to={"/complain"}>
           <li className="py-6 text-4xl">
-            <a className="font-bold"> Complain</a>
+            <p className="font-bold"> Complain</p>
           </li>
         </Link>
 
         <Link to={"/profile"}>
           <li className="py-6 text-4xl">
-            <a className="font-bold"> Profile</a>
+            <p className="font-bold"> Profile</p>
           </li>
         </Link>
         <Link to={"/"}>
           <li className="py-6 text-4xl">
-            <a className="font-bold"> Logout</a>
+            <p className="font-bold"> Logout</p>
           </li>
         </Link>
       </ul>

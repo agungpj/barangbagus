@@ -29,32 +29,32 @@ const NavbarAdmin = () => {
     >
       <Link to={"/product"} className="col text-decoration-none">
         <div>
-          <img src={Logo} alt="Logo" style={{ width: "70px" }} />
+          <img src={Logo} alt="Logo" className="w-[50px] sm:w-[70px]" />
         </div>
       </Link>
       <nav className="stroke">
         <ul className="hidden md:flex ">
           <Link to={"/complain"} className="col text-decoration-none">
             <li className="hover:text-red-500 border-b-1">
-              <a className="font-bold"> Complain</a>
+              <p className="font-bold"> Complain</p>
             </li>
           </Link>
 
           <Link to={"/category"} className="col text-decoration-none">
             <li className="hover:text-red-500 border-b-1">
-              <a className="font-bold"> Category</a>
+              <p className="font-bold"> Category</p>
             </li>
           </Link>
 
           <Link to={"/product"} className="col text-decoration-none">
             <li className="hover:text-red-500 border-b-1">
-              <a className="font-bold"> Product</a>
+              <p className="font-bold"> Product</p>
             </li>
           </Link>
 
           <Link to={"#"} className="col text-decoration-none">
             <li className="hover:text-red-500 border-b-1" onClick={logout}>
-              <a className="font-bold"> Logout</a>
+              <p className="font-bold"> Logout</p>
             </li>
           </Link>
         </ul>
@@ -72,25 +72,25 @@ const NavbarAdmin = () => {
       >
         <Link to={"/complain"}>
           <li className="py-6 text-4xl">
-            <a className="font-bold"> Complain</a>
+            <p className="font-bold"> Complain</p>
           </li>
         </Link>
 
         <Link to={"/category"}>
           <li className="py-6 text-4xl">
-            <a className="font-bold"> Category</a>
+            <p className="font-bold"> Category</p>
           </li>
         </Link>
 
         <Link to={"/product"}>
           <li className="py-6 text-4xl">
-            <a className="font-bold"> Product</a>
+            <p className="font-bold"> Product</p>
           </li>
         </Link>
 
         <Link to={"/"}>
           <li className="py-6 text-4xl">
-            <a className="font-bold"> Logout</a>
+            <p className="font-bold"> Logout</p>
           </li>
         </Link>
       </ul>

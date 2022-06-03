@@ -4,12 +4,14 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/userContext";
 import NavbarAdmin from "../components/NavbarAdmin";
-
+import { API } from "../config/api";
+import { useQuery } from "react-query";
 const Category = () => {
-  const [nav, setNav] = useState(false);
   const Navigate = useNavigate();
 
+  const [nav, setNav] = useState(false);
   let [isOpen, setIsOpen] = useState(false);
+
   const [state, dispatch] = useContext(UserContext);
   console.log(state);
 
@@ -24,6 +26,11 @@ const Category = () => {
       }
     }
   }, [state]);
+
+  let { data: categories } = useQuery("categoriesCache", async () => {
+    const response = await API.get("/categories");
+    return response.data.data;
+  });
 
   const handleClick = () => {
     setNav(!nav);
@@ -48,20 +55,9 @@ const Category = () => {
                   <th className="w-20 p-3 text-sm font-semibold tracking-wide text-left text-white">
                     No.
                   </th>
-                  <th className="w-10 p-3 text-sm font-semibold tracking-wide text-left text-white">
-                    Photo
-                  </th>
-                  <th className="w-26 p-3 text-sm font-semibold tracking-wide text-left text-white">
-                    Product Name
-                  </th>
-                  <th className="w-26 p-3 text-sm font-semibold tracking-wide text-left text-white">
-                    Product Desc
-                  </th>
-                  <th className="w-24 p-3 text-sm font-semibold tracking-wide text-left text-white">
-                    Product Price
-                  </th>
+
                   <th className="w-32 p-3 text-sm font-semibold tracking-wide text-left text-white">
-                    Qty
+                    Category Name
                   </th>
                   <th className="w-32 p-3 text-sm font-semibold tracking-wide text-left text-white">
                     Action
@@ -69,91 +65,81 @@ const Category = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                <tr className="bg-white">
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    <a
-                      href="#"
-                      className="font-bold text-blue-500 hover:underline"
-                    >
-                      1
-                    </a>
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    index.png
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    Mouse Gaming
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    Mouse Gaming
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    Rp. 200.000
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    Rp. 200.000
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    <div className="flex space-x-5">
-                      <button
-                        className="text-white text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-green-500 hover:bg-green-600"
-                        type="button"
-                        onClick={() => Navigate("/edit-category")}
+                {categories?.map((item, index) => (
+                  <tr key={index} className="bg-white">
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      <a
+                        href="#"
+                        className="font-bold text-blue-500 hover:underline"
                       >
-                        Edit
-                      </button>
-                      <button
-                        className="bg-red-500 hover:bg-red-600 text-white text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline"
-                        type="button"
-                        // onClick={() => Navigate("/")}
-                        onClick={() => setIsOpen(!isOpen)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                    <Transition
-                      as={Fragment}
-                      show={isOpen}
-                      enter="transition duration-500"
-                      enterFrom="opacity-0"
-                      enterTo="opacity-100"
-                      leave="transition duration-500"
-                      leaveFrom="opacity-100"
-                      leaveTo="opacity-0"
-                    >
-                      <Dialog
-                        as="div"
-                        className="fixed inset-0 flex items-center justify-center"
-                        open={isOpen}
-                        onClose={() => setIsOpen(false)}
-                      >
-                        <Dialog.Overlay className="fixed inset-0 bg-black/50" />
+                        {index + 1}
+                      </a>
+                    </td>
 
-                        <div className="bg-white p-8 rounded z-10 shadow-xl">
-                          <Dialog.Panel>
-                            <div class="w-full max-w-xs space-x-16">
-                              <p>Are you sure want to delete this data ?</p>
-                              <button
-                                className="text-white my-3 text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-green-500 hover:bg-green-600"
-                                type="button"
-                                // onClick={() => Navigate("/")}
-                              >
-                                Yes
-                              </button>
-                              <button
-                                className="text-white text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-600"
-                                type="button"
-                                // onClick={() => Navigate("/")}
-                              >
-                                No
-                              </button>
-                            </div>
-                          </Dialog.Panel>
-                        </div>
-                      </Dialog>
-                    </Transition>
-                  </td>
-                </tr>
+                    <td className="p-3 text-sm text-gray-700">{item.name}</td>
+
+                    <td className="p-3 text-sm text-gray-700">
+                      <div className="flex space-x-5">
+                        <button
+                          className="text-white text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-green-500 hover:bg-green-600"
+                          type="button"
+                          onClick={() => Navigate("/edit-product")}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="bg-red-500 hover:bg-red-600 text-white text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline"
+                          type="button"
+                          // onClick={() => Navigate("/")}
+                          onClick={() => setIsOpen(!isOpen)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                      <Transition
+                        as={Fragment}
+                        show={isOpen}
+                        enter="transition duration-500"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="transition duration-500"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
+                      >
+                        <Dialog
+                          as="div"
+                          className="fixed inset-0 flex items-center justify-center"
+                          open={isOpen}
+                          onClose={() => setIsOpen(false)}
+                        >
+                          <Dialog.Overlay className="fixed inset-0 bg-black/50" />
+
+                          <div className="bg-white p-8 rounded z-10 shadow-xl">
+                            <Dialog.Panel>
+                              <div class="w-full max-w-xs space-x-16">
+                                <p>Are you sure want to delete this data ?</p>
+                                <button
+                                  className="text-white my-3 text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-green-500 hover:bg-green-600"
+                                  type="button"
+                                  // onClick={() => Navigate("/")}
+                                >
+                                  Yes
+                                </button>
+                                <button
+                                  className="text-white text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-600"
+                                  type="button"
+                                  // onClick={() => Navigate("/")}
+                                >
+                                  No
+                                </button>
+                              </div>
+                            </Dialog.Panel>
+                          </div>
+                        </Dialog>
+                      </Transition>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

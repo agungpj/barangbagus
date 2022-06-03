@@ -1,11 +1,10 @@
 import React from "react";
-import { HiArrowNarrowRight } from "react-icons/hi";
-import Navbar from "../components/Navbar";
+import NavbarAdmin from "../components/NavbarAdmin";
 
 const EditProduct = () => {
   return (
     <div name="home" className="w-full bg-[#020202] h-full">
-      <Navbar />
+      <NavbarAdmin />
       {/* Container */}
       <div className="mx-auto px-8 h-full max-w-full">
         <p className="text-white text-2xl font-bold pt-32 pb-2 pl-10">
@@ -16,7 +15,6 @@ const EditProduct = () => {
             <button
               className="bg-red-500 px-4 hover:bg-red-600 my-5 text-white font-bold py-2  rounded focus:outline-none focus:shadow-outline"
               type="button"
-              // onClick={() => Navigate("/")}
             >
               Upload Image
             </button>
