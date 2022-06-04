@@ -88,7 +88,7 @@ const NavbarAdmin = () => {
           </li>
         </Link>
 
-        <Link to={"/"}>
+        <Link to={"/"} onClick={logout}>
           <li className="py-6 text-4xl">
             <p className="font-bold"> Logout</p>
           </li>

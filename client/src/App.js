@@ -79,7 +79,11 @@ const App = () => {
         <Route exact path="/" element={<Home />} />
         <Route exact path="/productid" element={<Productid />} />
         <Route exact path="/edit-category" element={<EditCategoryAdmin />} />
-        <Route exact path="/edit-product" element={<EditProductAdmin />} />
+        <Route
+          exact
+          path="//update-product/:id"
+          element={<EditProductAdmin />}
+        />
         <Route exact path="/add-category" element={<AddCategoryAdmin />} />
         <Route exact path="/add-product" element={<AddProductAdmin />} />
         <Route exact path="/profile" element={<Profile />} />

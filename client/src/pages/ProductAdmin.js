@@ -4,33 +4,70 @@ import { useNavigate } from "react-router-dom";
 import NavbarAdmin from "../components/NavbarAdmin";
 import { UserContext } from "../context/userContext";
 import { API } from "../config/api";
-import { useQuery } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import rupiahFormat from "rupiah-format";
 
 const ProductAdmin = () => {
-  let [isOpen, setIsOpen] = useState(false);
-
   const Navigate = useNavigate();
+  let [show, setShow] = useState(false);
+  const [idDelete, setIdDelete] = useState(null);
+  const [confirmDelete, setConfirmDelete] = useState(null);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const [state, dispatch] = useContext(UserContext);
   console.log(state);
 
-  useEffect(() => {
-    console.log(products);
-    if (state.isLogin === false) {
-      Navigate("/auth");
-    } else {
-      if (state.user.status === "admin") {
-        Navigate("/product");
-      } else if (state.user.status === "customer") {
-        Navigate("/");
-      }
-    }
-  }, [state]);
+  const handleUpdate = (id) => {
+    Navigate("/update-product/" + id);
+  };
 
-  let { data: products } = useQuery("productsCache", async () => {
+  const handleDelete = (id) => {
+    setIdDelete(id);
+    handleShow();
+  };
+
+  const handleDeleteModal = () => {
+    setConfirmDelete(true);
+  };
+
+  let { data: products, refetch } = useQuery("productsCache", async () => {
     const response = await API.get("/products");
     return response.data.data;
   });
+
+  const deleteById = useMutation(async (id) => {
+    console.log("harusnya delete");
+
+    try {
+      await API.delete(`/product/${id}`);
+      refetch();
+      console.log("harusnya delete");
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  useEffect(() => {
+    console.log(products);
+    // if (state.isLogin === false) {
+    //   Navigate("/auth");
+    // } else {
+    //   if (state.user.status === "admin") {
+    //     Navigate("/product");
+    //   } else if (state.user.status === "customer") {
+    //     Navigate("/auth");
+    //   }
+    // }
+
+    if (confirmDelete) {
+      // Close modal confirm delete data
+      handleClose();
+      // execute delete data by id function
+      deleteById.mutate(idDelete);
+      setConfirmDelete(null);
+    }
+  }, [confirmDelete]);
 
   return (
     <>
@@ -105,22 +142,27 @@ const ProductAdmin = () => {
                         <button
                           className="text-white text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-green-500 hover:bg-green-600"
                           type="button"
-                          onClick={() => Navigate("/edit-product")}
+                          onClick={() => {
+                            handleUpdate(item.id);
+                          }}
                         >
                           Edit
                         </button>
                         <button
                           className="bg-red-500 hover:bg-red-600 text-white text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline"
                           type="button"
+                          onClick={() => {
+                            handleDelete(item.id);
+                          }}
                           // onClick={() => Navigate("/")}
-                          onClick={() => setIsOpen(!isOpen)}
+                          // onClick={() => { handleDeletemodal(item.id) }};}
                         >
                           Delete
                         </button>
                       </div>
                       <Transition
                         as={Fragment}
-                        show={isOpen}
+                        show={show}
                         enter="transition duration-500"
                         enterFrom="opacity-0"
                         enterTo="opacity-100"
@@ -131,18 +173,20 @@ const ProductAdmin = () => {
                         <Dialog
                           as="div"
                           className="fixed inset-0 flex items-center justify-center"
-                          open={isOpen}
-                          onClose={() => setIsOpen(false)}
+                          open={show}
+                          onClose={() => setShow(false)}
                         >
                           <Dialog.Overlay className="fixed inset-0 bg-black/50" />
 
                           <div className="bg-white p-8 rounded z-10 shadow-xl">
                             <Dialog.Panel>
-                              <div class="w-full max-w-xs space-x-16">
+                              <div className="w-full max-w-xs space-x-16">
                                 <p>Are you sure want to delete this data ?</p>
                                 <button
                                   className="text-white my-3 text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-green-500 hover:bg-green-600"
                                   type="button"
+                                  // onClick={() => deleteOrder(item.id)}
+                                  onClick={handleDeleteModal}
                                   // onClick={() => Navigate("/")}
                                 >
                                   Yes
@@ -166,7 +210,7 @@ const ProductAdmin = () => {
             </table>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-5 md:hidden">
             {products?.map((item, index) => (
               <div
                 className="bg-white space-y-3 p-4 rounded-lg shadow"
@@ -191,20 +235,33 @@ const ProductAdmin = () => {
                   </div>
                 </div>
                 <div className="text-sm text-gray-700">{item.desc}</div>
-                <div>
+                <div className="flex items-center justify-center py-2">
                   <img
                     src={item.image}
-                    style={{
-                      width: "80px",
-                      height: "80px",
-                      objectFit: "cover",
-                    }}
+                    className="w-[100px] h-[100px] object-center rounded-md"
                     alt={item.name}
                   />
                 </div>
-                <div className="text-sm font-medium text-black">
+                <div className="text-lg font-bold text-center text-black">
                   {" "}
                   {rupiahFormat.convert(item.price)}
+                </div>
+                <div className="flex p-2">
+                  <button
+                    className="text-white mx-2 font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-green-500 hover:bg-green-600"
+                    type="button"
+                    onClick={() => Navigate("/edit-product")}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline"
+                    type="button"
+                    // onClick={() => Navigate("/")}
+                    onClick={() => setShow(!show)}
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
             ))}

@@ -59,7 +59,7 @@ const Category = () => {
                   <th className="w-32 p-3 text-sm font-semibold tracking-wide text-left text-white">
                     Category Name
                   </th>
-                  <th className="w-32 p-3 text-sm font-semibold tracking-wide text-left text-white">
+                  <th className="w-32 p-3 text-sm font-semibold tracking-wide text-center text-white">
                     Action
                   </th>
                 </tr>
@@ -145,72 +145,43 @@ const Category = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
-            <div className="bg-white space-y-3 p-4 rounded-lg shadow">
-              <div className="flex items-center space-x-2 text-sm">
-                <div>
-                  <a
-                    href="#"
-                    className="text-blue-500 font-bold hover:underline"
-                  >
-                    #1000
-                  </a>
-                </div>
-                <div className="text-gray-500">10/10/2021</div>
-                <div>
-                  <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-green-800 bg-green-200 rounded-lg bg-opacity-50">
-                    Delivered
-                  </span>
-                </div>
-              </div>
-              <div className="text-sm text-gray-700">
-                Kring New Fit office chair, mesh + PU, black
-              </div>
-              <div className="text-sm font-medium text-black">$200.00</div>
-            </div>
-            <div className="bg-white space-y-3 p-4 rounded-lg shadow">
-              <div className="flex items-center space-x-2 text-sm">
-                <div>
-                  <a
-                    href="#"
-                    className="text-blue-500 font-bold hover:underline"
-                  >
-                    #1001
-                  </a>
-                </div>
-                <div className="text-gray-500">10/10/2021</div>
-                <div>
-                  <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-yellow-800 bg-yellow-200 rounded-lg bg-opacity-50">
-                    Shipped
-                  </span>
+            {categories?.map((item, index) => (
+              <div
+                className="bg-white space-y-3 p-4 rounded-lg shadow"
+                key={index}
+              >
+                <div className="flex justify-between items-center text-sm">
+                  <div>
+                    <a
+                      href="#"
+                      className="text-blue-500 text-lg font-bold hover:underline"
+                    >
+                      {index + 1}
+                    </a>
+                  </div>
+                  <div className="text-zinc-600 text-md font-bold uppercase">
+                    {item.name}
+                  </div>
+                  <div className="flex p-2">
+                    <button
+                      className="text-white mx-2 font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-green-500 hover:bg-green-600"
+                      type="button"
+                      onClick={() => Navigate("/edit-product")}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline"
+                      type="button"
+                      // onClick={() => Navigate("/")}
+                      onClick={() => setIsOpen(!isOpen)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div className="text-sm text-gray-700">
-                Kring New Fit office chair, mesh + PU, black
-              </div>
-              <div className="text-sm font-medium text-black">$200.00</div>
-            </div>
-            <div className="bg-white space-y-3 p-4 rounded-lg shadow">
-              <div className="flex items-center space-x-2 text-sm">
-                <div>
-                  <a
-                    href="#"
-                    className="text-blue-500 font-bold hover:underline"
-                  >
-                    #1002
-                  </a>
-                </div>
-                <div className="text-gray-500">10/10/2021</div>
-                <div>
-                  <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-gray-800 bg-gray-200 rounded-lg bg-opacity-50">
-                    Canceled
-                  </span>
-                </div>
-              </div>
-              <div className="text-sm text-gray-700">
-                Kring New Fit office chair, mesh + PU, black
-              </div>
-              <div className="text-sm font-medium text-black">$200.00</div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
