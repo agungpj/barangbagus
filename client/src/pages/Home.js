@@ -21,14 +21,14 @@ const Home = () => {
         <div className="pt-40 pb-10">
           <p className="text-white font-bold text-3xl">Products</p>
         </div>
-        <div class="wrap">
-          <div class="search">
+        <div className="wrap">
+          <div className="search">
             <input
               type="text"
-              class="searchTerm"
+              className="searchTerm"
               placeholder="What are you looking for?"
             />
-            <button type="submit" class="searchButton">
+            <button type="submit" className="searchButton">
               <FaSearch className="pl-2" />
             </button>
           </div>

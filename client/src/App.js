@@ -78,10 +78,14 @@ const App = () => {
       <Route path="/" element={<PrivateRoute />}>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/productid" element={<Productid />} />
-        <Route exact path="/edit-category" element={<EditCategoryAdmin />} />
         <Route
           exact
-          path="//update-product/:id"
+          path="/update-category/:id"
+          element={<EditCategoryAdmin />}
+        />
+        <Route
+          exact
+          path="/update-product/:id"
           element={<EditProductAdmin />}
         />
         <Route exact path="/add-category" element={<AddCategoryAdmin />} />

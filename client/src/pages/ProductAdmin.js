@@ -2,33 +2,21 @@ import React, { Fragment, useState, useEffect, useContext } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 import NavbarAdmin from "../components/NavbarAdmin";
-import { UserContext } from "../context/userContext";
 import { API } from "../config/api";
 import { useQuery, useMutation } from "react-query";
 import rupiahFormat from "rupiah-format";
+import ModalDelete from "../components/ModalDelete";
 
 const ProductAdmin = () => {
   const Navigate = useNavigate();
-  let [show, setShow] = useState(false);
+  // let [show, setShow] = useState(false);
   const [idDelete, setIdDelete] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(null);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  const [state, dispatch] = useContext(UserContext);
-  console.log(state);
+  // const handleClose = () => setShow(false);
+  // const handleShow = () => setShow(true);
 
   const handleUpdate = (id) => {
     Navigate("/update-product/" + id);
-  };
-
-  const handleDelete = (id) => {
-    setIdDelete(id);
-    handleShow();
-  };
-
-  const handleDeleteModal = () => {
-    setConfirmDelete(true);
   };
 
   let { data: products, refetch } = useQuery("productsCache", async () => {
@@ -36,20 +24,23 @@ const ProductAdmin = () => {
     return response.data.data;
   });
 
-  const deleteById = useMutation(async (id) => {
-    console.log("harusnya delete");
+  const handleDelete = (id) => {
+    setIdDelete(id);
+    // handleShow();
+    setConfirmDelete(true);
+    console.log(id);
+  };
 
+  const deleteById = useMutation(async (id) => {
     try {
       await API.delete(`/product/${id}`);
       refetch();
-      console.log("harusnya delete");
     } catch (error) {
       console.log(error);
     }
   });
 
   useEffect(() => {
-    console.log(products);
     // if (state.isLogin === false) {
     //   Navigate("/auth");
     // } else {
@@ -59,10 +50,10 @@ const ProductAdmin = () => {
     //     Navigate("/auth");
     //   }
     // }
-
+    console.log(confirmDelete);
     if (confirmDelete) {
       // Close modal confirm delete data
-      handleClose();
+      // handleClose();
       // execute delete data by id function
       deleteById.mutate(idDelete);
       setConfirmDelete(null);
@@ -160,49 +151,6 @@ const ProductAdmin = () => {
                           Delete
                         </button>
                       </div>
-                      <Transition
-                        as={Fragment}
-                        show={show}
-                        enter="transition duration-500"
-                        enterFrom="opacity-0"
-                        enterTo="opacity-100"
-                        leave="transition duration-500"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                      >
-                        <Dialog
-                          as="div"
-                          className="fixed inset-0 flex items-center justify-center"
-                          open={show}
-                          onClose={() => setShow(false)}
-                        >
-                          <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-
-                          <div className="bg-white p-8 rounded z-10 shadow-xl">
-                            <Dialog.Panel>
-                              <div className="w-full max-w-xs space-x-16">
-                                <p>Are you sure want to delete this data ?</p>
-                                <button
-                                  className="text-white my-3 text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-green-500 hover:bg-green-600"
-                                  type="button"
-                                  // onClick={() => deleteOrder(item.id)}
-                                  onClick={handleDeleteModal}
-                                  // onClick={() => Navigate("/")}
-                                >
-                                  Yes
-                                </button>
-                                <button
-                                  className="text-white text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-600"
-                                  type="button"
-                                  // onClick={() => Navigate("/")}
-                                >
-                                  No
-                                </button>
-                              </div>
-                            </Dialog.Panel>
-                          </div>
-                        </Dialog>
-                      </Transition>
                     </td>
                   </tr>
                 ))}
@@ -257,8 +205,9 @@ const ProductAdmin = () => {
                   <button
                     className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline"
                     type="button"
-                    // onClick={() => Navigate("/")}
-                    onClick={() => setShow(!show)}
+                    onClick={() => {
+                      handleDelete(item.id);
+                    }}
                   >
                     Delete
                   </button>

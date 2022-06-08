@@ -15,6 +15,10 @@ const Category = () => {
   const [state, dispatch] = useContext(UserContext);
   console.log(state);
 
+  const handleUpdate = (id) => {
+    Navigate("/update-category/" + id);
+  };
+
   useEffect(() => {
     if (state.isLogin === false) {
       Navigate("/auth");
@@ -83,7 +87,9 @@ const Category = () => {
                         <button
                           className="text-white text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-green-500 hover:bg-green-600"
                           type="button"
-                          onClick={() => Navigate("/edit-product")}
+                          onClick={() => {
+                            handleUpdate(item.id);
+                          }}
                         >
                           Edit
                         </button>
@@ -116,7 +122,7 @@ const Category = () => {
 
                           <div className="bg-white p-8 rounded z-10 shadow-xl">
                             <Dialog.Panel>
-                              <div class="w-full max-w-xs space-x-16">
+                              <div className="w-full max-w-xs space-x-16">
                                 <p>Are you sure want to delete this data ?</p>
                                 <button
                                   className="text-white my-3 text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-green-500 hover:bg-green-600"
@@ -166,7 +172,7 @@ const Category = () => {
                     <button
                       className="text-white mx-2 font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-green-500 hover:bg-green-600"
                       type="button"
-                      onClick={() => Navigate("/edit-product")}
+                      onClick={() => Navigate("/update-category")}
                     >
                       Edit
                     </button>

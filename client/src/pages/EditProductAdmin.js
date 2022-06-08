@@ -140,7 +140,7 @@ const EditProduct = () => {
           )}
           <div className="mb-4">
             <input
-              class="form-control block w-[100%] mt-10
+              className="form-control block w-[100%] mt-10
     px-3
     py-1.5
     text-base
@@ -148,7 +148,7 @@ const EditProduct = () => {
     text-gray-700
     bg-white bg-clip-padding
     border border-solid border-gray-300
-    rounded
+    rounded 
     transition
     ease-in-out
     m-0
@@ -213,11 +213,11 @@ const EditProduct = () => {
                 // </label>
                 <div className="form-check" key={index}>
                   <label
-                    class="form-check-label inline-block text-white font-bold"
+                    className="form-check-label inline-block text-white font-bold"
                     key={index}
                   >
                     <input
-                      class=" form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain mr-2 cursor-pointer"
+                      className=" form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain mr-2 cursor-pointer"
                       type="checkbox"
                       value={item?.id}
                       categoryId={categoryId}
