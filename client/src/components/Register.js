@@ -1,8 +1,64 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useMutation } from "react-query";
 import { API } from "../config/api";
-
+import { UserContext } from "../context/userContext";
+import axios from "axios";
 const Register = () => {
+  // const [state, dispatch] = useContext(UserContext);
+
+  // const [message, setMessage] = useState(null);
+  // const [form, setForm] = useState({
+  //   name: "",
+  //   email: "",
+  //   password: "",
+  // });
+
+  // const { name, email, password } = form;
+
+  // const handleChange = (e) => {
+  //   setForm({
+  //     ...form,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
+
+  // const handleSubmit = useMutation(async (e) => {
+  //   try {
+  //     e.preventDefault();
+
+  //     // Data body
+  //     const body = JSON.stringify(form);
+
+  //     // Configuration Content-type
+  //     const config = {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: body,
+  //     };
+
+  //     // Insert data user to database
+  //     const response = await API.post("/register", config);
+
+  //     console.log(response);
+
+  //     // Notification
+  //     if (response.status == "success") {
+  //       setForm({
+  //         name: "",
+  //         email: "",
+  //         password: "",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // });
+
+  const [state, dispatch] = useContext(UserContext);
+
+  const [message, setMessage] = useState(null);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -22,34 +78,33 @@ const Register = () => {
     try {
       e.preventDefault();
 
+      // Data body
+      const body = JSON.stringify(form);
+
       // Configuration Content-type
       const config = {
         headers: {
-          "Content-type": "application/json",
+          "Content-Type": "application/json",
         },
       };
-
-      // Data body
-      const body = JSON.stringify(form);
 
       // Insert data user to database
       const response = await API.post("/register", body, config);
 
+      console.log(response);
+
       // Notification
-      if (response.data.status === "success...") {
+      if (response.status == "success") {
         setForm({
           name: "",
           email: "",
           password: "",
         });
-      } else {
-        console.log("error");
       }
     } catch (error) {
-      console.log("error");
+      console.log(error);
     }
   });
-
   return (
     <>
       <form
