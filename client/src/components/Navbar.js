@@ -34,11 +34,11 @@ const Navbar = () => {
       </Link>
       <nav className="stroke">
         <ul className="hidden md:flex ">
-          <Link to={"/complain"} className="col text-decoration-none">
+          {/*  <Link to={"/complain"} className="col text-decoration-none">
             <li className="hover:text-red-500 border-b-1">
               <p className="font-bold"> Complain</p>
             </li>
-          </Link>
+          </Link> */}
 
           <Link to={"/profile"} className="col text-decoration-none">
             <li className="hover:text-red-500 border-b-1">
@@ -63,12 +63,13 @@ const Navbar = () => {
             : "absolute top-0 left-0 flex w-full h-screen bg-[#020202] flex-col justify-center items-center"
         }
       >
+        {/* 
         <Link to={"/complain"}>
           <li className="py-6 text-4xl">
             <p className="font-bold"> Complain</p>
           </li>
         </Link>
-
+      */}
         <Link to={"/profile"}>
           <li className="py-6 text-4xl">
             <p className="font-bold"> Profile</p>

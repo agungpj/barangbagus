@@ -77,7 +77,7 @@ const App = () => {
       <Route path="/auth" element={<Auth />} />
       <Route path="/" element={<PrivateRoute />}>
         <Route exact path="/" element={<Home />} />
-        <Route exact path="/productid" element={<Productid />} />
+        <Route exact path="/product/:id" element={<Productid />} />
         <Route
           exact
           path="/update-category/:id"

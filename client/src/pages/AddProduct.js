@@ -208,7 +208,6 @@ const AddProduct = () => {
           <button
             className="bg-green-500 hover:bg-green-600 my-10 text-white font-bold py-2 w-full rounded focus:outline-none focus:shadow-outline"
             type="submit"
-            // onClick={() => Navigate("/")}
           >
             Save
           </button>

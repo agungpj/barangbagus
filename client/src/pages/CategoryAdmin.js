@@ -5,13 +5,15 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/userContext";
 import NavbarAdmin from "../components/NavbarAdmin";
 import { API } from "../config/api";
-import { useQuery } from "react-query";
+import { useQuery, useMutation } from "react-query";
 const Category = () => {
   const Navigate = useNavigate();
 
-  const [nav, setNav] = useState(false);
   let [isOpen, setIsOpen] = useState(false);
-
+  let [show, setShow] = useState(false);
+  const [idDelete, setIdDelete] = useState(null);
+  const [confirmDelete, setConfirmDelete] = useState(null);
+  const handleShow = () => setShow(true);
   const [state, dispatch] = useContext(UserContext);
   console.log(state);
 
@@ -31,14 +33,38 @@ const Category = () => {
     }
   }, [state]);
 
-  let { data: categories } = useQuery("categoriesCache", async () => {
+  let { data: categories, refetch } = useQuery("categoriesCache", async () => {
     const response = await API.get("/categories");
     return response.data.data;
   });
 
-  const handleClick = () => {
-    setNav(!nav);
+  const handleDelete = (id) => {
+    setIdDelete(id);
+    handleShow();
+    console.log(id);
   };
+
+  const deleteById = useMutation(async (id) => {
+    try {
+      await API.delete(`/category/${id}`);
+      refetch();
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  const handleDeleteModal = () => {
+    setConfirmDelete(true);
+  };
+
+  useEffect(() => {
+    console.log(confirmDelete);
+    if (confirmDelete) {
+      deleteById.mutate(idDelete);
+      setConfirmDelete(null);
+    }
+  }, [confirmDelete]);
+
   return (
     <>
       <NavbarAdmin />
@@ -97,14 +123,16 @@ const Category = () => {
                           className="bg-red-500 hover:bg-red-600 text-white text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline"
                           type="button"
                           // onClick={() => Navigate("/")}
-                          onClick={() => setIsOpen(!isOpen)}
+                          onClick={() => {
+                            handleDelete(item.id);
+                          }}
                         >
                           Delete
                         </button>
                       </div>
                       <Transition
                         as={Fragment}
-                        show={isOpen}
+                        show={show}
                         enter="transition duration-500"
                         enterFrom="opacity-0"
                         enterTo="opacity-100"
@@ -115,10 +143,10 @@ const Category = () => {
                         <Dialog
                           as="div"
                           className="fixed inset-0 flex items-center justify-center"
-                          open={isOpen}
-                          onClose={() => setIsOpen(false)}
+                          open={show}
+                          onClose={() => setShow(false)}
                         >
-                          <Dialog.Overlay className="fixed inset-0 bg-black/50" />
+                          <Dialog.Overlay className="fixed inset-0 bg-black/60" />
 
                           <div className="bg-white p-8 rounded z-10 shadow-xl">
                             <Dialog.Panel>
@@ -127,6 +155,8 @@ const Category = () => {
                                 <button
                                   className="text-white my-3 text-center font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-green-500 hover:bg-green-600"
                                   type="button"
+                                  // onClick={() => deleteOrder(item.id)}
+                                  onClick={handleDeleteModal}
                                   // onClick={() => Navigate("/")}
                                 >
                                   Yes
@@ -172,15 +202,18 @@ const Category = () => {
                     <button
                       className="text-white mx-2 font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline bg-green-500 hover:bg-green-600"
                       type="button"
-                      onClick={() => Navigate("/update-category")}
+                      onClick={() => {
+                        handleUpdate(item.id);
+                      }}
                     >
                       Edit
                     </button>
                     <button
                       className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-5 w-1/2 rounded focus:outline-none focus:shadow-outline"
                       type="button"
-                      // onClick={() => Navigate("/")}
-                      onClick={() => setIsOpen(!isOpen)}
+                      onClick={() => {
+                        handleDelete(item.id);
+                      }}
                     >
                       Delete
                     </button>

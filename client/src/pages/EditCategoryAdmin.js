@@ -8,41 +8,40 @@ import { useNavigate, useParams } from "react-router-dom";
 const EditCategory = () => {
   let navigate = useNavigate();
   const { id } = useParams();
+  const [category, setCategory] = useState({ name: "" });
 
-  const [category, setCategory] = useState({});
-  const [form, setForm] = useState({ name: "" });
   // Fetching category data by id from database
-  let { refetch } = useQuery("categoryCache", async () => {
+  let { data: categoryData } = useQuery("categoryCache", async () => {
     const response = await API.get("/category/" + id);
-    setCategory({ name: response.data.name });
+    return response.data.data.name;
   });
-
   const handleChange = (e) => {
     setCategory({
       ...category,
       name: e.target.value,
     });
   };
+  useEffect(() => {
+    if (categoryData) {
+      console.log(categoryData);
+      setCategory({ name: categoryData });
+    }
+  }, [categoryData]);
 
   const handleSubmit = useMutation(async (e) => {
     try {
       e.preventDefault();
 
-      // Data body
-      const body = JSON.stringify(category);
-
-      // Configuration
       const config = {
-        method: "PATCH",
         headers: {
           "Content-type": "application/json",
         },
-        body,
       };
 
-      // Insert category data
-      const response = await API.patch("/category/" + id, config);
-      console.log(response);
+      const body = JSON.stringify(category);
+
+      await API.patch("/category/" + id, body, config);
+
       navigate("/category");
     } catch (error) {
       console.log(error);
@@ -61,11 +60,10 @@ const EditCategory = () => {
           <div className="mb-4">
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="username"
               type="text"
               placeholder="Edit Category ..."
               onChange={handleChange}
-              value={category.name}
+              value={category?.name}
             />
           </div>
           <button

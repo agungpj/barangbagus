@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Product2 from "../assets/product2.png";
+import { useQuery, useMutation } from "react-query";
+import { useParams, useNavigate } from "react-router-dom";
+import convertRupiah from "rupiah-format";
+
+// API config
+import { API } from "../config/api";
 const Productid = () => {
+  const navigate = useNavigate();
+  let { id } = useParams();
+
+  let { data: product, refetch } = useQuery("Cache", async () => {
+    const config = {
+      method: "GET",
+      headers: {
+        Authorization: "Basic " + localStorage.token,
+      },
+    };
+    const response = await API.get("/product/" + id, config);
+    const datas = response.data;
+    console.log(datas);
+  });
+
   return (
     <div name="home" className="w-full h-screen bg-[#020202]">
       <Navbar />
@@ -11,7 +32,7 @@ const Productid = () => {
 
         <div className="max-w-[1000px] w-full grid sm:grid-cols-2 gap-8">
           <img
-            src={Product2}
+            src={product?.image}
             alt="Logo Image"
             style={{ width: "436px", height: "555px" }}
           />
@@ -25,13 +46,7 @@ const Productid = () => {
           </div>
           <p className="text-white">Stock: 23</p>
 
-          <div className="text-white py-5">
-            <p>- Wireless Mouse</p>
-            <p>- Konektivitas wireless 2.4 GHz</p>
-            <p>- Jarak wireless hingga 10 m</p>
-            <p>- Plug and Play</p>
-            <p>- Baterai tahan hingga 12 bulan</p>
-          </div>
+          <div className="text-white py-5">{product?.desc}</div>
           <div className="text-white py-3 text-justify">
             <p>
               Mouse Wireless Alytech AL - Y5D, hadir dengan desain 3 tombol
@@ -44,7 +59,7 @@ const Productid = () => {
             </p>
           </div>
           <div className="text-red-600 text-xl font-bold py-2 flex justify-end pb-5">
-            <p>Rp. 300.000</p>
+            <p> {convertRupiah.convert(product?.price)}</p>
           </div>
           <button
             className="bg-red-500 hover:bg-red-600 text-white text-center font-bold py-2 w-full rounded focus:outline-none focus:shadow-outline"
