@@ -148,3 +148,36 @@ nav.stroke ul li a:hover:after {
   box-sizing: border-box;
   border-radius: 5px;
 }
+
+.parent {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.child-1 {
+  display: flex;
+  flex: 1 1 30rem;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 60px;
+  padding-right: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+  .res-child-1 {
+    padding-left: 100px;
+    margin-top: 50px;
+  }
+
+  .res-child-2 {
+    padding-left: 200px;
+    margin-top: 50px;
+  }
+}
+
+.child-2 {
+  display: flex;
+  flex: 1 1 30rem;
+  flex-direction: column;
+  justify-content: center;
+}

@@ -204,17 +204,15 @@ function Auth() {
 
   return (
     <div name="about" className="w-full h-screen bg-[#020202] text-white">
-      <div className="flex flex-col justify-center items-center w-full h-full">
-        <div className="max-w-[1000px] w-full grid grid-cols-2 gap-8"></div>
+      <div className="flex flex-col justify-center items-center">
         {isOpen ? message : ""}
 
-        <div className="max-w-[1000px] w-full grid sm:grid-cols-2 gap-8">
-          <div className="sm:text-left">
+        <div className="justify-center text-center items-center max-w-[1000px] w-full sm:grid grid-cols-2 gap-8">
+          <div className="sm:text-left p-20">
             <img
-              className="pb-10"
+              className="ml-28 sm:ml-10 w-[120px] md:w-[200px] pb-10"
               src={Logo}
               alt="Logo"
-              style={{ width: "200px" }}
             />
             <p className="text-4xl font-bold">Easy, Fast and Realible.</p>
             <p className="font-light text-zinc-500 pt-5">
@@ -239,7 +237,7 @@ function Auth() {
             </div>
           </div>
 
-          <div className="flex justify-end mt-20">
+          <div className="mt-1 ml-20 md:flex justify-end mt-20">
             <div className="w-full max-w-xs">
               {login ? (
                 <>

@@ -1,145 +1,182 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import profile from "../assets/profile.png";
 import product1 from "../assets/product2.png";
 import dumbmerch from "../assets/DumbMerch.png";
 import Navbar from "../components/Navbar";
+import convertRupiah from "rupiah-format";
+import dateFormat from "dateformat";
+import { useNavigate } from "react-router-dom";
+// Import useQuery
+import { UserContext } from "../context/userContext";
+
+import { useQuery } from "react-query";
+import imgBlank from "../assets/blank-profile.png";
+
+// API config
+import { API } from "../config/api";
 function Profile() {
+  const navigate = useNavigate;
+  const [state] = useContext(UserContext);
+
+  // Fetching profile data from database
+  let { data: profile, refetch: profileRefetch } = useQuery(
+    "profileCache",
+    async () => {
+      const config = {
+        method: "GET",
+        headers: {
+          Authorization: "Basic " + localStorage.token,
+        },
+      };
+      const response = await API.get("/profile", config);
+      return response.data;
+    }
+  );
+
+  const handleEdit = (id) => {
+    navigate("/edit-profile/" + id);
+  };
+
+  // Fetching transactions data from database
+  let { data: transactions, refetch: transactionsRefetch } = useQuery(
+    "transactionsCache",
+    async () => {
+      const config = {
+        method: "GET",
+        headers: {
+          Authorization: "Basic " + localStorage.token,
+        },
+      };
+      const response = await API.get("/transactions", config);
+      return response.data;
+    }
+  );
   return (
-    <div name="about" className="w-full h-full bg-[#020202] text-white">
+    <>
       <Navbar />
-      <p className="imageprofile text-red-500 text-2xl font-bold text-left pt-32 ml-44 pb-2">
-        My Profile
-      </p>
-      <div className="text-right flex flex-wrap basis-12">
-        <div className="grow-0 pl-20 pr-10">
-          <img
-            src={profile}
-            alt="Logo Image"
-            style={{ width: "338px", height: "435px" }}
-          />
-        </div>
-        <div className="pl-5 pt-10 md:pt-0 sm:m-row items-center grow -mt-12 pb-12">
-          <p className="my-4 text-left pt-7 text-red-500 text-md font-bold">
-            Name
-          </p>
-          <p className="text-left">Agung Prasetya Jati</p>
-          <p className="my-4 text-left pt-7 text-red-500 text-md font-bold">
-            Email
-          </p>
-          <p className="text-left">agungprasetya1121@gmail.com</p>
+      <div className="my-5">
+        <div>
+          <div md="6">
+            <div className="text-header-product mb-4">My Profile</div>
+            <div>
+              <div md="6">
+                <img
+                  src={profile?.image ? profile.image : imgBlank}
+                  className="img-fluid rounded"
+                  alt="profile"
+                />
+              </div>
+              <div md="6">
+                <div className="profile-header">Name</div>
+                <div className="profile-content">{state.user.name}</div>
 
-          <p className="my-4 text-left pt-7 text-red-500 text-md font-bold">
-            Phone
-          </p>
-          <p className="text-left">083895931234</p>
+                <div className="profile-header">Email</div>
+                <div className="profile-content">{state.user.email}</div>
 
-          <p className="my-4 text-left pt-7 text-red-500 text-md font-bold">
-            Gender
-          </p>
-          <p className="text-left">Pria Sejati</p>
+                <div className="profile-header">Phone</div>
+                <div className="profile-content">
+                  {profile?.phone ? profile?.phone : "-"}
+                </div>
 
-          <p className="my-4 text-left pt-7 text-red-500 text-md font-bold">
-            Address
-          </p>
-          <p className="text-left">Bekasi Panas</p>
-        </div>
-        <div className="grow md:px-40">
-          <p className="sm:pb-4 my-4 pt-7 text-center text-red-500 text-md font-bold -mt-10 mx-auto">
-            My Transaction
-          </p>
-          <div className="spike grid grid-cols-3 sm:grid-cols-3 bg-zinc-900">
-            <div className="flex justify-center items-center">
-              <img
-                src={product1}
-                alt="Logo Image"
-                style={{ width: "80px", height: "120px" }}
-              />
-            </div>
+                <div className="profile-header">Gender</div>
+                <div className="profile-content">
+                  {profile?.gender ? profile?.gender : "-"}
+                </div>
 
-            <div className="pt-5">
-              <p className=" text-red-500 font-bold text-md text-left">Mouse</p>
-              <p className=" text-red-500 text-left text-sm">
-                Kamis, 19 Mei 2022
-              </p>
-              <p className="text-left text-sm pt-2">Price: Rp.300.000</p>
-              <p className="text-left text-sm font-bold pt-5">
-                Sub-Total: Rp.300.000
-              </p>
-            </div>
-
-            <div className="flex justify-end items-center pr-4">
-              <img
-                src={dumbmerch}
-                alt="Logo Image"
-                style={{ width: "70px", height: "70px" }}
-              />
+                <div className="profile-header">Address</div>
+                <div className="profile-content">
+                  {profile?.address ? profile?.address : "-"}
+                </div>
+              </div>
             </div>
           </div>
-          <div className="spike grid grid-cols-3 sm:grid-cols-3 bg-zinc-900">
-            <div className="flex justify-center items-center">
-              <img
-                src={product1}
-                alt="Logo Image"
-                style={{ width: "80px", height: "120px" }}
-              />
-            </div>
+          <div md="6">
+            <div className="text-header-product mb-4">My Transaction</div>
+            {transactions?.length != 0 ? (
+              <>
+                {transactions?.map((item) => (
+                  <div style={{ background: "#303030" }} className="p-2 mb-1">
+                    <div fluid className="px-1">
+                      <div>
+                        <div xs="3">
+                          <img
+                            src={item.product.image}
+                            alt="img"
+                            className="img-fluid"
+                            style={{
+                              height: "120px",
+                              width: "170px",
+                              objectFit: "cover",
+                            }}
+                          />
+                        </div>
+                        <div xs="6">
+                          <div
+                            style={{
+                              fontSize: "18px",
+                              divor: "#F74D4D",
+                              fontWeight: "500",
+                              lineHeight: "19px",
+                            }}
+                          >
+                            {item.product.name}
+                          </div>
+                          <div
+                            className="mt-2"
+                            style={{
+                              fontSize: "14px",
+                              divor: "#F74D4D",
+                              fontWeight: "300",
+                              lineHeight: "19px",
+                            }}
+                          >
+                            {dateFormat(
+                              item.createdAt,
+                              "dddd, d mmmm yyyy, HH:MM "
+                            )}
+                            WIB
+                          </div>
 
-            <div className="pt-5">
-              <p className=" text-red-500 font-bold text-md text-left">Mouse</p>
-              <p className=" text-red-500 text-left text-sm">
-                Kamis, 19 Mei 2022
-              </p>
-              <p className="text-left text-sm pt-2">Price: Rp.300.000</p>
-              <p className="text-left text-sm font-bold pt-5">
-                Sub-Total: Rp.300.000
-              </p>
-            </div>
+                          <div
+                            className="mt-3"
+                            style={{
+                              fontSize: "14px",
+                              fontWeight: "300",
+                            }}
+                          >
+                            Price : {convertRupiah.convert(item.price)}
+                          </div>
 
-            <div className="flex justify-end items-center pr-4">
-              <img
-                src={dumbmerch}
-                alt="Logo Image"
-                style={{ width: "70px", height: "70px" }}
-              />
-            </div>
-          </div>
-          <div className="spike grid grid-cols-3 sm:grid-cols-3 bg-zinc-900">
-            <div className="flex justify-center items-center">
-              <img
-                src={product1}
-                alt="Logo Image"
-                style={{ width: "80px", height: "120px" }}
-              />
-            </div>
-
-            <div className="pt-5">
-              <p className=" text-red-500 font-bold text-md text-left">Mouse</p>
-              <p className=" text-red-500 text-left text-sm">
-                Kamis, 19 Mei 2022
-              </p>
-              <p className="text-left text-sm pt-2">Price: Rp.300.000</p>
-              <p className="text-left text-sm font-bold pt-5">
-                Sub-Total: Rp.300.000
-              </p>
-            </div>
-
-            <div className="flex justify-end items-center pr-4">
-              <img
-                src={dumbmerch}
-                alt="Logo Image"
-                style={{ width: "70px", height: "70px" }}
-              />
-            </div>
+                          <div
+                            className="mt-3"
+                            style={{
+                              fontSize: "14px",
+                              fontWeight: "700",
+                            }}
+                          >
+                            Sub Total : {convertRupiah.convert(item.price)}
+                          </div>
+                        </div>
+                        <div xs="3">
+                          <div
+                            className={`status-transaction-${item.status} rounded h-100 d-flex align-items-center justify-content-center`}
+                          >
+                            {item.status}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <div className="no-data-transaction">No transaction</div>
+            )}
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
-
-// <div name="about" className="w-full h-screen bg-[#000000ef] text-white">
-//         <img src={Logo} alt="Logo Image" style={{ width: "50px" }} />
-
-//         <p className="text-4xl font-bold inline"></p>
 
 export default Profile;
